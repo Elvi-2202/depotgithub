@@ -10,7 +10,7 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                  git branch:'main', url: 'https://github.com/Elvi-2202/depotOnlinedev26.git'
+                  git branch: 'main', url: 'https://github.com/Elvi-2202/depotgithub.git'
             }
         }
         stage('install docker') {
