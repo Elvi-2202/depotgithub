@@ -15,6 +15,8 @@ pipeline {
         }
         stage('install docker') {
             steps {
+                  sh 'sudo apt purge  docker* -y'
+                  sh 'sudo apt autoremove docker.io docker-compose -y'
                   sh 'sudo apt-get update'
                   sh 'sudo apt-get install apt-transport-https  ca-certificates curl software-properties-common -y'
                   sh 'sudo apt-get install docker.io -y'
@@ -35,6 +37,7 @@ pipeline {
           }
         stage('create container nginx') {
             steps {  
+                  sh 'sudo docker rm -f myapp'
                   sh 'sudo docker run -d --name myapp --hostname myapp myapp-image:latest'
                   sh 'sudo docker ps'      
               }
