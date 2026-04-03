@@ -26,7 +26,8 @@ pipeline {
         }
         stage('build image docker') {
             steps {
-                  script {                    
+                  script {
+                  sh 'sudo docker image rm -f "myapp-image:latest"'
                   sh 'sudo docker build -t "myapp-image" .'
                   sh 'sudo docker image ls'  
                         }
