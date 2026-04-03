@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    stages {
+
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                  git branch: 'main', url: 'https://github.com/Elvi-2202/depotgithub.git'
+            }
+        }
+        stage('install docker') {
+            steps {
+                  sh 'sudo apt-get update'
+                  sh 'sudo apt-get install apt-transport-https  ca-certificates curl software-properties-common -y'
+                  sh 'sudo apt-get install docker.io -y'
+                  sh 'sudo apt update'
+                  sh 'sudo chmod 666 /var/run/docker.sock'
+                  sh 'sudo usermod -aG  docker $USER'
+                  sh 'sudo systemctl restart docker.service'
+            }
+        }
+        stage('build image docker') {
+            steps {
+                  script { 
+                  sh 'sudo docker image rm -f "myapp-image:latest"' 
+                  sh 'sudo docker build -t "myapp-image" .'
+                  sh 'sudo docker image ls'  
+                        }
+              }
+          }
+        stage('create container nginx') {
+            steps {  
+                  sh 'sudo docker rm -f myapp'
+                  sh 'sudo docker run -d --name myapp --hostname myapp myapp-image:latest'
+                  sh 'sudo docker ps'      
+              }
+          }
+      
+    }
+}
