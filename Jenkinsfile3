@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    stages {
+
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                  git branch:'main', url: 'https://github.com/Elvi-2202/depotOnlinedev26.git'
+            }
+        }
+        stage('install docker') {
+            steps {
+                  sh 'sudo apt purge  docker* -y'
+                  sh 'sudo apt autoremove docker.io docker-compose -y'
+                  sh 'sudo apt-get update'
+                  sh 'sudo apt-get install apt-transport-https  ca-certificates curl software-properties-common -y'
+                  sh 'sudo apt-get install docker.io -y'
+                  sh 'sudo apt update'
+                  sh 'sudo chmod 666 /var/run/docker.sock'
+                  sh 'sudo usermod -aG  docker $USER'
+                  sh 'sudo systemctl restart docker.service'
+            }
+        }
+        stage('build image docker') {
+            steps {
+                  script {                    
+                  sh 'sudo docker build -t "myapp-image" .'
+                  sh 'sudo docker image ls'  
+                        }
+              }
+          }
+      
+    }
+}
