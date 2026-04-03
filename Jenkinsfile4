@@ -27,7 +27,7 @@ pipeline {
         stage('build image docker') {
             steps {
                   script { 
-                  //sh 'sudo docker image rm -f "myapp-image:latest"' 
+                  sh 'sudo docker image rm -f "myapp-image:latest"' 
                   sh 'sudo docker build -t "myapp-image" .'
                   sh 'sudo docker image ls'  
                         }
@@ -35,7 +35,7 @@ pipeline {
           }
         stage('create container nginx') {
             steps {  
-                  //sh 'sudo docker rm -f myapp'
+                  sh 'sudo docker rm -f myapp'
                   sh 'sudo docker run -d --name myapp --hostname myapp myapp-image:latest'
                   sh 'sudo docker ps'      
               }
